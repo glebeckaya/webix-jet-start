@@ -45,6 +45,7 @@ export default class DataTableView extends JetView{
 	}
 	init() {
 		this.$$("dataTable").parse(this.data);
+		this.table = this.$$("dataTable");
 	}
 	addItem() {
 		webix.prompt({
@@ -57,16 +58,16 @@ export default class DataTableView extends JetView{
 			}
 		}).then(
 			(result) => {
-				this.$$("dataTable").add({"Name": result});
+				this.table.add({"Name": result});
 			}
 		);
 	}
 	showConfirmMessage(id) {
-		if (!this.$$("dataTable").getItem(id)) return;
+		if (!this.table.getItem(id)) return;
 		webix.confirm({
-			text: `Do you really want to delete "${this.$$("dataTable").getItem(id)["Name"]}"?`
+			text: `Do you really want to delete "${this.table.getItem(id)["Name"]}"?`
 		}).then(
-			() => this.$$("dataTable").remove(id)
+			() => this.table.remove(id)
 		);
 	}
 }
