@@ -57,16 +57,16 @@ export default class DataTableView extends JetView{
 			}
 		}).then(
 			(result) => {
-				this.data.add({"Name": result});
+				this.$$("dataTable").add({"Name": result});
 			}
 		);
 	}
 	showConfirmMessage(id) {
-		if (!this.data.getItem(id)) return;
+		if (!this.$$("dataTable").getItem(id)) return;
 		webix.confirm({
-			text: `Do you really want to delete "${this.data.getItem(id)["Name"]}"?`
+			text: `Do you really want to delete "${this.$$("dataTable").getItem(id)["Name"]}"?`
 		}).then(
-			() => this.data.remove(id)
+			() => this.$$("dataTable").remove(id)
 		);
 	}
 }
