@@ -26,9 +26,8 @@ export default class DataView extends JetView{
 						view: "datatable",
 						data: countries,
 						editable: true,
-						editor: "text",
 						columns: [
-							{ id: "Name", header: "Name", sort:"string", fillspace: true },
+							{ id: "Name", header: "Name", sort:"string", fillspace: true, editor: "text" },
 							{ id: "del", header: "Del", template: "{common.trashIcon()}", width: 50 },
 						],
 						css: "webix_shadow_medium",
@@ -38,7 +37,6 @@ export default class DataView extends JetView{
 						onClick: {
 							"wxi-trash": (e, id) => {
 								this.showConfirmMessage(id, countries);
-								return false;
 							}
 						},
 					}
@@ -69,11 +67,10 @@ export default class DataView extends JetView{
 						data: statuses,
 						localId: "sattusesTable",
 						columns: [
-							{ id: "Name", header: "Name", sort:"string", fillspace: true },
+							{ id: "Name", header: "Name", sort:"string", fillspace: true, editor: "text" },
 							{ id: "del", header: "Del", template: "{common.trashIcon()}", width: 50 },
 						],
 						editable: true,
-						editor: "text",
 						css: "webix_shadow_medium",
 						rules: {
 							Name: webix.rules.isNotEmpty,
@@ -81,7 +78,6 @@ export default class DataView extends JetView{
 						onClick: {
 							"wxi-trash": (e, id) => {
 								this.showConfirmMessage(id, statuses);
-								return false;
 							}
 						},
 					}
