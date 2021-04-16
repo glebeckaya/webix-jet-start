@@ -98,7 +98,7 @@ export default class DataView extends JetView{
 			}
 		}).then(
 			(result) => {
-				countries.add(Object({"Name": result}));
+				countries.add({"Name": result});
 			}
 		);
 	}
