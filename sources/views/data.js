@@ -7,24 +7,131 @@ export default class DataView extends JetView{
 		const countriesTab = {
 			header: "Countries",
 			body: {
-				view: "datatable",
-				data: countries,
-				autoConfig: true,
-				css: "webix_shadow_medium"
+				rows: [
+					{
+						padding: 5,
+						cols: [
+							{
+								view: "button", 
+								value: "Add new", 
+								autowidth: true, 
+								css: "webix_primary", 
+								click: () => this.addCountry(),
+							},
+							{}
+						]
+						
+					},
+					{
+						view: "datatable",
+						data: countries,
+						editable: true,
+						editor: "text",
+						columns: [
+							{ id: "Name", header: "Name", sort:"string", fillspace: true },
+							{ id: "del", header: "Del", template: "{common.trashIcon()}", width: 50 },
+						],
+						css: "webix_shadow_medium",
+						rules: {
+							Name: webix.rules.isNotEmpty,
+						},
+						onClick: {
+							"wxi-trash": (e, id) => {
+								this.showConfirmMessage(id, countries);
+								return false;
+							}
+						},
+					}
+				]
+				
 			}
 		};
 		const statusTab = {
 			header: "Ststus",
 			body: {
-				view: "datatable",
-				data: statuses,
-				columns: [
-					{ id: "Name", header: "Name", sort:"string", fillspace: true }
-				],
-				autoConfig: true,
-				css: "webix_shadow_medium"
+				rows: [
+					{
+						padding: 5,
+						cols: [
+							{
+								view: "button", 
+								value: "Add new", 
+								autowidth: true, 
+								css: "webix_primary", 
+								click: () => this.addStatus(),
+							},
+							{}
+						]
+						
+					},
+					{
+						view: "datatable",
+						data: statuses,
+						localId: "sattusesTable",
+						columns: [
+							{ id: "Name", header: "Name", sort:"string", fillspace: true },
+							{ id: "del", header: "Del", template: "{common.trashIcon()}", width: 50 },
+						],
+						editable: true,
+						editor: "text",
+						css: "webix_shadow_medium",
+						rules: {
+							Name: webix.rules.isNotEmpty,
+						},
+						onClick: {
+							"wxi-trash": (e, id) => {
+								this.showConfirmMessage(id, statuses);
+								return false;
+							}
+						},
+					}
+				]
+				
 			}
 		};
 		return { view: "tabview", cells: [countriesTab, statusTab] };
+	}
+	addCountry() {
+		webix.prompt({
+			title: "Add a new country",
+			ok: "Add",
+			cancel: "Canael",
+			input: {
+				required: true,
+				placeholder: "This field is required",
+			}
+		}).then(
+			(result) => {
+				countries.add(Object({"Name": result}));
+			}
+		);
+	}
+	addStatus() {
+		webix.prompt({
+			title: "Add a new status",
+			ok: "Add",
+			cancel: "Canael",
+			input: {
+				required: true,
+				placeholder: "This field is required",
+			}
+		}).then(
+			(result) => {
+				const status = {};
+				status["Name"] = result;
+				const statusAmount = Object.keys(statuses.data.pull).length;
+				let idRandomStatus = (Math.floor(1 + Math.random() * (statusAmount - 1)));
+				status["icon"] = statuses.getItem(idRandomStatus)["Icon"];
+				statuses.add(status);
+			}
+		);
+	}
+	showConfirmMessage(id, data) {
+		if (!data) return;
+		webix.confirm({
+			text: `Do you really want to delete "${data.getItem(id)["Name"]}"?`
+		}).then(
+			() => data.remove(id)
+		);
 	}
 }
