@@ -75,10 +75,10 @@ export default class ContactsFormView extends JetView {
 			webix.message("Please, check all fields!");
 			return false;
 		}
-		try {
+		const values = this.form.getValues();
+		if (values.id) {
 			this.form.save();
-		} catch(err) {
-			const values = this.form.getValues();
+		} else {
 			this.app.callEvent("onDataSave", [values, this.form]);
 		}
 	}
