@@ -1,6 +1,8 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
+import {countries} from "models/countries";
 import PopupView from "views/windows/popup";
+import {showConfirmMessage} from "helpers/deleteItem";
 
 export default class ContactsListView extends JetView {
 	config() {
@@ -10,10 +12,17 @@ export default class ContactsListView extends JetView {
 				{
 					view: "list",
 					localId: "list",
+					css: "contacts-list",
 					data: contacts,
-					template: "#Name#",
+					template: (obj) => {
+						const idCountry = obj.Country;
+						return `${obj.Name} from ${countries.getItem(idCountry).Name} <div class='webix_icon wxi-trash'></div>`;
+					},
 					scroll: "y",
-					select: true
+					select: true,
+					onClick: {
+						"wxi-trash": (e, id) => showConfirmMessage(id, this.list).then(() => this.list.select(this.list.getFirstId()))
+					}
 				},
 				{
 					view: "button",
@@ -25,6 +34,7 @@ export default class ContactsListView extends JetView {
 		};
 	}
 	init() {
+		this.list = this.$$("list");
 		this._jetPopup = this.ui(PopupView);
 	}
 	ready() {

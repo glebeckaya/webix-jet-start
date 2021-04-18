@@ -1,4 +1,5 @@
 import {JetView} from "webix-jet";
+import {showConfirmMessage} from "helpers/deleteItem";
 
 export default class DataTableView extends JetView{
 	constructor(app, data, title) {
@@ -36,7 +37,7 @@ export default class DataTableView extends JetView{
 					},
 					onClick: {
 						"wxi-trash": (e, id) => {
-							this.showConfirmMessage(id);
+							showConfirmMessage(id, this.table);
 						}
 					},
 				}
@@ -60,14 +61,6 @@ export default class DataTableView extends JetView{
 			(result) => {
 				this.table.add({"Name": result});
 			}
-		);
-	}
-	showConfirmMessage(id) {
-		if (!this.table.getItem(id)) return;
-		webix.confirm({
-			text: `Do you really want to delete "${this.table.getItem(id)["Name"]}"?`
-		}).then(
-			() => this.table.remove(id)
 		);
 	}
 }
