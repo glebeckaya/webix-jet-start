@@ -5,7 +5,6 @@ import {countries} from "models/countries";
 export default class ContactsFormView extends JetView {
 	config() {
 		return {
-			// type: "clean",
 			rows: [
 				{
 					view: "form",
@@ -82,7 +81,6 @@ export default class ContactsFormView extends JetView {
 			const values = this.form.getValues();
 			this.app.callEvent("onDataSave", [values, this.form]);
 		}
-		
 	}
 	clearForm() {
 		webix.confirm({
