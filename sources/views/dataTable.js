@@ -1,4 +1,5 @@
 import {JetView} from "webix-jet";
+import {showConfirmMessage} from "helpers/deleteItem";
 
 export default class DataTableView extends JetView{
 	constructor(app, data, title) {
@@ -7,6 +8,8 @@ export default class DataTableView extends JetView{
 		this.data = data;
 	}
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
@@ -14,7 +17,7 @@ export default class DataTableView extends JetView{
 					cols: [
 						{
 							view: "button", 
-							value: "Add new", 
+							value: _("Add new"), 
 							autowidth: true, 
 							css: "webix_primary", 
 							click: () => this.addItem(),
@@ -27,8 +30,8 @@ export default class DataTableView extends JetView{
 					localId: "dataTable",
 					editable: true,
 					columns: [
-						{ id: "Name", header: "Name", sort:"string", fillspace: true, editor: "text" },
-						{ id: "del", header: "Del", template: "{common.trashIcon()}", width: 50 },
+						{ id: "Name", header: _("Name"), sort:"string", fillspace: true, editor: "text" },
+						{ id: "del", header: _("Del"), template: "{common.trashIcon()}", width: 100 },
 					],
 					css: "webix_shadow_medium",
 					rules: {
@@ -36,7 +39,7 @@ export default class DataTableView extends JetView{
 					},
 					onClick: {
 						"wxi-trash": (e, id) => {
-							this.showConfirmMessage(id);
+							showConfirmMessage(id, this.table, _);
 						}
 					},
 				}
@@ -46,28 +49,21 @@ export default class DataTableView extends JetView{
 	init() {
 		this.$$("dataTable").parse(this.data);
 		this.table = this.$$("dataTable");
+		this._ = this.app.getService("locale")._;
 	}
 	addItem() {
 		webix.prompt({
-			title: `Add a new ${this.title}`,
-			ok: "Add",
-			cancel: "Canael",
+			title: this._(`AddNew${this.title}`),
+			ok: this._("Add new"),
+			cancel: this._("Cancel"),
 			input: {
 				required: true,
-				placeholder: "This field is required",
+				placeholder: this._("fieldRequired"),
 			}
 		}).then(
 			(result) => {
 				this.table.add({"Name": result});
 			}
-		);
-	}
-	showConfirmMessage(id) {
-		if (!this.table.getItem(id)) return;
-		webix.confirm({
-			text: `Do you really want to delete "${this.table.getItem(id)["Name"]}"?`
-		}).then(
-			() => this.table.remove(id)
 		);
 	}
 }

@@ -5,6 +5,8 @@ import DataTableView from "views/dataTable";
 
 export default class DataView extends JetView{
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const countriesTable = {
 			cols: [new DataTableView(this.app, countries, "country")],
 			localId: "countriesTable"
@@ -21,8 +23,8 @@ export default class DataView extends JetView{
 					view: "tabbar", 
 					localId: "tabbar",
 					options: [
-						{value: "Countries", id: "countriesTable"},
-						{value: "Statuses", id: "statusesTable"}
+						{value: _("Countries"), id: "countriesTable"},
+						{value: _("Statuses"), id: "statusesTable"}
 					]
 				},
 				{

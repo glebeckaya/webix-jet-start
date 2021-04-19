@@ -1,54 +1,101 @@
 import {JetView} from "webix-jet";
+import {statuses} from "models/statuses";
+import {countries} from "models/countries";
+import {contacts} from "models/contacts";
 
 export default class ContactsFormView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
-			type: "clean",
 			rows: [
 				{
 					view: "form",
 					localId: "contactsForm",
 					width: 300,
 					elements: [
-						{ template: "Contacts", type: "section" },
-						{ view: "text", label: "Name", name: "Name", invalidMessage: "This field is required", bottomPadding: 20 },
-						{ view: "text", label: "Email", name: "Email", invalidMessage: "This field is required", bottomPadding: 20 },
-						{ view: "text", label: "Status", name: "Status", bottomPadding: 20 },
-						{ view: "text", label: "Country", name: "Country", bottomPadding: 20 },
+						{ template: _("Contacts"), type: "section" },
+						{ view: "text", label: _("Name"), name: "Name", invalidMessage: _("fieldRequired"), bottomPadding: 25 },
+						{ view: "text", label: "Email", name: "Email", invalidMessage: _("requiredEmail"), bottomPadding: 30 },
+						{ 
+							view: "combo", 
+							label: _("Status"), 
+							name: "Status", 
+							bottomPadding: 25,
+							invalidMessage: _("fieldRequired"),
+							suggest: {
+								data: statuses,
+								template: "#Name#",
+								body: {
+									template: "#Name#",
+								}
+							}
+						},
+						{ 
+							view: "combo", 
+							label: _("Country"), 
+							name: "Country", 
+							bottomPadding: 25,
+							invalidMessage: _("fieldRequired"),
+							suggest: {
+								data: countries,
+								template: "#Name#",
+								body: {
+									template: "#Name#",
+								}
+							} 
+						},
 						{ margin: 5, cols: [
 							{ 
 								view: "button", 
-								value: "Add new" , 
+								value: _("Edit"), 
 								css: "webix_primary",
-								click: () => this.validateForm(),
+								click: () => this.saveFormValues(_),
 							},
 							{ 
 								view: "button", 
-								value: "Clear",
+								value: _("Clear"),
 								click: () => this.clearForm()
 							}
 						]}
 					],
 					rules: {
 						Name: webix.rules.isNotEmpty,
-						Email: webix.rules.isNotEmpty,
+						Email: webix.rules.isEmail,
+						Status: webix.rules.isNotEmpty,
+						Country: webix.rules.isNotEmpty,
 					}
 				},
 				{}
 			]
 		};
 	}
-	validateForm() {
-		if (!this.$$("contactsForm").validate()) webix.message("Please, check all fields!");
+	init() {
+		this.form = this.$$("contactsForm");
+	}
+	urlChange() {
+		const id = this.getParam("id", true);
+		if (id && contacts.exists(id)){
+			this.form.setValues(contacts.getItem(id));
+		} else {
+			this.form.clear();
+		}
+	}
+	saveFormValues(_) {
+		if (!this.form.validate()) {
+			webix.message(_("checkFields"));
+			return false;
+		}
+		const values = this.form.getValues();
+		contacts.updateItem(values.id, values);	
 	}
 	clearForm() {
-		const form = this.$$("contactsForm");
 		webix.confirm({
 			text: "Form data will be cleared"
 		}).then(
 			() => {
-				form.clear();
-				form.clearValidation();
+				this.form.clear();
+				this.form.clearValidation();
 			}
 		);
 	}

@@ -1,0 +1,11 @@
+.app_menu .webix_list_item.menu {
+	color: #313131;
+}
+.contacts-list .webix_list_item {
+    display: flex;
+    justify-content: space-between;
+}
+.contacts-list .webix_icon.wxi-trash {
+    display: flex;
+    align-items: center;
+}
