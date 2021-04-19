@@ -72,17 +72,19 @@ export default class ContactsFormView extends JetView {
 	init() {
 		this.form = this.$$("contactsForm");
 	}
+	ready() {
+		this.on(this.app, "onContactsEnpty", () => {
+			this.form.clear();
+		});
+	}
 	saveFormValues() {
 		if (!this.form.validate()) {
 			webix.message("Please, check all fields!");
 			return false;
 		}
 		const values = this.form.getValues();
-		if (values.id) {
-			this.form.save();
-		} else {
-			this.app.callEvent("onDataSave", [values, this.form]);
-		}
+
+		this.app.callEvent("onDataSave", [values, this.form]);
 	}
 	clearForm() {
 		webix.confirm({
@@ -94,8 +96,8 @@ export default class ContactsFormView extends JetView {
 			}
 		);
 	}
-	bindWith(list){
-		this.form.bind(list);
+	setNewValues(item){
+		this.form.setValues(item);
 	}
 	validateEmail(email) {
 		const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
