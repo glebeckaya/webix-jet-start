@@ -39,7 +39,7 @@ export default class DataTableView extends JetView{
 					},
 					onClick: {
 						"wxi-trash": (e, id) => {
-							showConfirmMessage(id, this.table);
+							showConfirmMessage(id, this.table, _);
 						}
 					},
 				}
@@ -49,15 +49,16 @@ export default class DataTableView extends JetView{
 	init() {
 		this.$$("dataTable").parse(this.data);
 		this.table = this.$$("dataTable");
+		this._ = this.app.getService("locale")._;
 	}
 	addItem() {
 		webix.prompt({
-			title: `Add a new ${this.title}`,
-			ok: "Add",
-			cancel: "Canael",
+			title: this._(`AddNew${this.title}`),
+			ok: this._("Add new"),
+			cancel: this._("Cancel"),
 			input: {
 				required: true,
-				placeholder: "This field is required",
+				placeholder: this._("fieldRequired"),
 			}
 		}).then(
 			(result) => {

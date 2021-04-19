@@ -1,8 +1,10 @@
-export function showConfirmMessage(id, data) {
+export function showConfirmMessage(id, data, _) {
 	let promise = webix.promise.defer();
 	if (!data.getItem(id)) return;
 	webix.confirm({
-		text: `Do you really want to delete "${data.getItem(id)["Name"]}"?`
+		ok: "OK", 
+		cancel: _("Cancel"),
+		text: `${_("wantDelete")} "${data.getItem(id)["Name"]}"?`
 	}).then(
 		() => {
 			data.remove(id);

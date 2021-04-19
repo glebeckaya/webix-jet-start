@@ -1,6 +1,7 @@
 import {JetView} from "webix-jet";
 import {statuses} from "models/statuses";
 import {countries} from "models/countries";
+import {contacts} from "models/contacts";
 
 export default class ContactsFormView extends JetView {
 	config() {
@@ -14,14 +15,14 @@ export default class ContactsFormView extends JetView {
 					width: 300,
 					elements: [
 						{ template: _("Contacts"), type: "section" },
-						{ view: "text", label: _("Name"), name: "Name", invalidMessage: "This field is required", bottomPadding: 25 },
-						{ view: "text", label: "Email", name: "Email", invalidMessage: "your-name@domain.com - required format of Email", bottomPadding: 30 },
+						{ view: "text", label: _("Name"), name: "Name", invalidMessage: _("fieldRequired"), bottomPadding: 25 },
+						{ view: "text", label: "Email", name: "Email", invalidMessage: _("requiredEmail"), bottomPadding: 30 },
 						{ 
 							view: "combo", 
 							label: _("Status"), 
 							name: "Status", 
 							bottomPadding: 25,
-							invalidMessage: "This field is required",
+							invalidMessage: _("fieldRequired"),
 							suggest: {
 								data: statuses,
 								template: "#Name#",
@@ -35,7 +36,7 @@ export default class ContactsFormView extends JetView {
 							label: _("Country"), 
 							name: "Country", 
 							bottomPadding: 25,
-							invalidMessage: "This field is required",
+							invalidMessage: _("fieldRequired"),
 							suggest: {
 								data: countries,
 								template: "#Name#",
@@ -49,7 +50,7 @@ export default class ContactsFormView extends JetView {
 								view: "button", 
 								value: _("Add new"), 
 								css: "webix_primary",
-								click: () => this.saveFormValues(),
+								click: () => this.saveFormValues(_),
 							},
 							{ 
 								view: "button", 
@@ -60,7 +61,7 @@ export default class ContactsFormView extends JetView {
 					],
 					rules: {
 						Name: webix.rules.isNotEmpty,
-						Email: value => webix.rules.isNotEmpty && this.validateEmail(value),
+						Email: webix.rules.isEmail,
 						Status: webix.rules.isNotEmpty,
 						Country: webix.rules.isNotEmpty,
 					}
@@ -72,19 +73,21 @@ export default class ContactsFormView extends JetView {
 	init() {
 		this.form = this.$$("contactsForm");
 	}
-	ready() {
-		this.on(this.app, "onContactsEnpty", () => {
+	urlChange() {
+		const id = this.getParam("id", true);
+		if (id && contacts.exists(id)){
+			this.form.setValues(contacts.getItem(id));
+		} else {
 			this.form.clear();
-		});
+		}
 	}
-	saveFormValues() {
+	saveFormValues(_) {
 		if (!this.form.validate()) {
-			webix.message("Please, check all fields!");
+			webix.message(_("checkFields"));
 			return false;
 		}
 		const values = this.form.getValues();
-
-		this.app.callEvent("onDataSave", [values, this.form]);
+		contacts.updateItem(values.id, values);	
 	}
 	clearForm() {
 		webix.confirm({
@@ -95,12 +98,5 @@ export default class ContactsFormView extends JetView {
 				this.form.clearValidation();
 			}
 		);
-	}
-	setNewValues(item){
-		this.form.setValues(item);
-	}
-	validateEmail(email) {
-		const reg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-		return reg.test(String(email).toLowerCase());
 	}
 }

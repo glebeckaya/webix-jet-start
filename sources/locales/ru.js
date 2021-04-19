@@ -15,5 +15,13 @@ export default {
 	"Status": "Статус",
 	"Country": "Страна",
 	"Clear": "Очистить",
-	"AddNewContact": "Добавление нового контакта"
+	"AddNewContact": "Добавление нового контакта",
+	"PromptNewContact": "Пожалуйста, введите имя нового контакта",
+	"Cancel": "Закрыть",
+	"AddNewcountry": "Добавьте новую страну",
+	"AddNewstatus": "Добавьте новый статус",
+	"fieldRequired": "Это поле обязательно",
+	"requiredEmail": "ваше-имя@домен.com - требуемый формат для Email",
+	"checkFields": "Пожалуйста, проверьте все поля ввода!",
+	"wantDelete": "Вы действительно хотите удалить"
 };

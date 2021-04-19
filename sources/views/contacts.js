@@ -16,7 +16,6 @@ export default class ContactsView extends JetView {
 							view: "list",
 							localId: "list",
 							css: "contacts-list",
-							// data: contacts,
 							template: "#Name# <div class='webix_icon wxi-trash'></div>",
 							scroll: "y",
 							select: true,
@@ -40,31 +39,23 @@ export default class ContactsView extends JetView {
 	init() {
 		this.list = this.$$("list");
 		this.list.parse(contacts);
+		this.on(this.list, "onAfterSelect", id => {
+			this.setParam("id", id, true);
+		});
+		this._ = this.app.getService("locale")._;
 	}
 	urlChange(){
 		const id = this.getParam("id");
-		if(!this.list.getItem(id)) this.setParam("id", this.list.getFirstId(), true);
+		if(!contacts.exists(id)) this.setParam("id", contacts.getFirstId(), true);
 		if (id && this.list.exists(id)){
 			this.list.select(id);
-			this.getSubView("form").setNewValues(this.list.getItem(id));
 		}
-	}
-	ready() {
-		this.on(this.app, "onDataSave", (data) => {
-			if(data) {
-				contacts.updateItem(data.id, data);	
-			}
-		});
-		this.on(this.list, "onAfterSelect", id => {
-			this.setParam("id", id, true);
-			this.getSubView("form").setNewValues(this.list.getItem(id));
-		});
 	}
 	saveNewContact() {
 		webix.prompt({
-			title: "Please, type name of new contact",
-			ok: "Add",
-			cancel: "Cancel",
+			text: this._("PromptNewContact"),
+			ok: this._("Add new"),
+			cancel: this._("Cancel"),
 			input: {
 				required: true,
 			},
@@ -76,12 +67,12 @@ export default class ContactsView extends JetView {
 		});
 	}
 	deleteItem(id) {
-		showConfirmMessage(id, contacts).then(() => {
+		showConfirmMessage(id, contacts, this._).then(() => {
 			const firstItem = this.list.getFirstId();
 			if (firstItem)	{
 				this.list.select(firstItem);
 			} else {
-				this.app.callEvent("onContactsEnpty");
+				this.show("/top/contacts");
 			}			
 		});	
 	}
