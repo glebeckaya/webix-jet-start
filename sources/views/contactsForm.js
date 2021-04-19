@@ -4,6 +4,8 @@ import {countries} from "models/countries";
 
 export default class ContactsFormView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
@@ -11,12 +13,12 @@ export default class ContactsFormView extends JetView {
 					localId: "contactsForm",
 					width: 300,
 					elements: [
-						{ template: "Contacts", type: "section" },
-						{ view: "text", label: "Name", name: "Name", invalidMessage: "This field is required", bottomPadding: 25 },
+						{ template: _("Contacts"), type: "section" },
+						{ view: "text", label: _("Name"), name: "Name", invalidMessage: "This field is required", bottomPadding: 25 },
 						{ view: "text", label: "Email", name: "Email", invalidMessage: "your-name@domain.com - required format of Email", bottomPadding: 30 },
 						{ 
 							view: "combo", 
-							label: "Status", 
+							label: _("Status"), 
 							name: "Status", 
 							bottomPadding: 25,
 							invalidMessage: "This field is required",
@@ -30,7 +32,7 @@ export default class ContactsFormView extends JetView {
 						},
 						{ 
 							view: "combo", 
-							label: "Country", 
+							label: _("Country"), 
 							name: "Country", 
 							bottomPadding: 25,
 							invalidMessage: "This field is required",
@@ -45,13 +47,13 @@ export default class ContactsFormView extends JetView {
 						{ margin: 5, cols: [
 							{ 
 								view: "button", 
-								value: "Add new" , 
+								value: _("Add new"), 
 								css: "webix_primary",
 								click: () => this.saveFormValues(),
 							},
 							{ 
 								view: "button", 
-								value: "Clear",
+								value: _("Clear"),
 								click: () => this.clearForm()
 							}
 						]}

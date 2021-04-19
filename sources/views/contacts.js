@@ -13,7 +13,7 @@ export default class ContactsView extends JetView {
 		this.list = this.getSubView("list").getRoot().queryView({view:"list"});
 		this.getSubView("form").bindWith(this.list);
 		const id = this.getParam("id");
-		if(!id) this.setParam("id", this.list.getFirstId(), true);
+		if(!this.list.getItem(id)) this.setParam("id", this.list.getFirstId(), true);
 		if (id && this.list.exists(id)){
 			this.list.select(id);
 		}

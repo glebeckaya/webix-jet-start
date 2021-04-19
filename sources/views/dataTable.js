@@ -8,6 +8,8 @@ export default class DataTableView extends JetView{
 		this.data = data;
 	}
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
 				{
@@ -15,7 +17,7 @@ export default class DataTableView extends JetView{
 					cols: [
 						{
 							view: "button", 
-							value: "Add new", 
+							value: _("Add new"), 
 							autowidth: true, 
 							css: "webix_primary", 
 							click: () => this.addItem(),
@@ -28,8 +30,8 @@ export default class DataTableView extends JetView{
 					localId: "dataTable",
 					editable: true,
 					columns: [
-						{ id: "Name", header: "Name", sort:"string", fillspace: true, editor: "text" },
-						{ id: "del", header: "Del", template: "{common.trashIcon()}", width: 50 },
+						{ id: "Name", header: _("Name"), sort:"string", fillspace: true, editor: "text" },
+						{ id: "del", header: _("Del"), template: "{common.trashIcon()}", width: 100 },
 					],
 					css: "webix_shadow_medium",
 					rules: {

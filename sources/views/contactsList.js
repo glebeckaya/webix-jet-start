@@ -6,9 +6,11 @@ import {showConfirmMessage} from "helpers/deleteItem";
 
 export default class ContactsListView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		return {
 			rows: [
-				{ template: "All contacts", css: "webix_shadow_medium app_start", height: 40 },
+				{ template: _("All contacts"), css: "webix_shadow_medium app_start", height: 40 },
 				{
 					view: "list",
 					localId: "list",
@@ -26,7 +28,7 @@ export default class ContactsListView extends JetView {
 				},
 				{
 					view: "button",
-					value: "Add new" , 
+					value: _("Add new"), 
 					css: "webix_primary",
 					click: () => this._jetPopup.showWindow()
 				}
@@ -42,6 +44,7 @@ export default class ContactsListView extends JetView {
 			if(data){
 				contacts.add(data);
 				form.clear();
+				this.list.select(data.id);
 			}
 		});
 	}

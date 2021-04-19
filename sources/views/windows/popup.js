@@ -3,13 +3,15 @@ import ContactsFormView from "views/contactsForm";
 
 export default class PopupView extends JetView {
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		return { 
 			view: "window",
 			position: "center",
 			move: true,
 			head: {
 				cols: [
-					{ template: "Add new contact", type: "header", borderless: true },
+					{ template: _("AddNewContact"), type: "header", borderless: true },
 					{ view: "icon", icon: "wxi-close", tooltip: "Close window", click: () => {
 						this.hideWindow();
 					}}
