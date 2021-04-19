@@ -8,7 +8,7 @@ export default class TopView extends JetView{
 
 		const menu = {
 			view: "menu", 
-			id: "menu", 
+			localId: "menu", 
 			css: "app_menu",
 			width: 180, 
 			layout: "y", 

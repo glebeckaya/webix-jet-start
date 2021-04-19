@@ -10,6 +10,7 @@ export default {
 	"Add new": "Добавить",
 	"Name": "Имя",
 	"Del": "Удалить",
+	"Edit": "Редактировать",
 
 	"All contacts": "Все сонтакты",
 	"Status": "Статус",

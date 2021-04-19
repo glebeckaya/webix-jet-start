@@ -20,7 +20,10 @@ export default class ContactsView extends JetView {
 							scroll: "y",
 							select: true,
 							onClick: {
-								"wxi-trash": (e, id) => this.deleteItem(id) 
+								"wxi-trash": (e, id) => {
+									this.deleteItem(id);
+									return false;
+								} 
 							}
 						},
 						{
@@ -46,9 +49,9 @@ export default class ContactsView extends JetView {
 	}
 	urlChange(){
 		const id = this.getParam("id");
-		if(!contacts.exists(id)) this.setParam("id", contacts.getFirstId(), true);
-		if (id && this.list.exists(id)){
-			this.list.select(id);
+		const currentId = (contacts.exists(id)) ? id : contacts.getFirstId();
+		if(currentId) {
+			this.list.select(currentId);
 		}
 	}
 	saveNewContact() {
@@ -68,9 +71,9 @@ export default class ContactsView extends JetView {
 	}
 	deleteItem(id) {
 		showConfirmMessage(id, contacts, this._).then(() => {
-			const firstItem = this.list.getFirstId();
-			if (firstItem)	{
-				this.list.select(firstItem);
+			const id = this.list.getSelectedId() || this.list.getFirstId();
+			if (id)	{
+				this.list.select(id);
 			} else {
 				this.show("/top/contacts");
 			}			

@@ -48,7 +48,7 @@ export default class ContactsFormView extends JetView {
 						{ margin: 5, cols: [
 							{ 
 								view: "button", 
-								value: _("Add new"), 
+								value: _("Edit"), 
 								css: "webix_primary",
 								click: () => this.saveFormValues(_),
 							},

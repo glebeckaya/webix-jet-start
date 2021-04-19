@@ -10,6 +10,7 @@ export default {
 	"Add new": "Add new",
 	"Name": "Name",
 	"Del": "Del",
+	"Edit": "Edit",
 
 	"All contacts": "All contacts",
 	"Status": "Status",
