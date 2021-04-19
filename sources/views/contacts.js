@@ -71,12 +71,9 @@ export default class ContactsView extends JetView {
 	}
 	deleteItem(id) {
 		showConfirmMessage(id, contacts, this._).then(() => {
-			const id = this.list.getSelectedId() || this.list.getFirstId();
-			if (id)	{
-				this.list.select(id);
-			} else {
+			if (this.list.getSelectedId() == id || !this.list.getSelectedId()) {
 				this.show("/top/contacts");
-			}			
+			}
 		});	
 	}
 }
