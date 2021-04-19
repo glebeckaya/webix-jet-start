@@ -71,7 +71,6 @@ export default class ContactsView extends JetView {
 	}
 	deleteItem(id) {
 		showConfirmMessage(id, contacts, this._).then(() => {
-			console.log(this.list.getSelectedId() == id)
 			if (!this.list.getSelectedId()) {
 				this.show("/top/contacts");
 			}
