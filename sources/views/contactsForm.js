@@ -81,7 +81,7 @@ export default class ContactsFormView extends JetView {
 			} else {
 				this.form.clear();
 			}
-		})
+		});
 	}
 	saveFormValues(_) {
 		if (!this.form.validate()) {
