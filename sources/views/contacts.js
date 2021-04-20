@@ -41,18 +41,20 @@ export default class ContactsView extends JetView {
 	}
 	init() {
 		this.list = this.$$("list");
-		this.list.parse(contacts);
+		this.list.sync(contacts);
 		this.on(this.list, "onAfterSelect", id => {
 			this.setParam("id", id, true);
 		});
 		this._ = this.app.getService("locale")._;
 	}
 	urlChange(){
-		const id = this.getParam("id");
-		const currentId = (contacts.exists(id)) ? id : contacts.getFirstId();
-		if(currentId) {
-			this.list.select(currentId);
-		}
+		contacts.waitData.then(() => {
+			const id = this.getParam("id");
+			const currentId = (contacts.exists(id)) ? id : contacts.getFirstId();
+			if(currentId) {
+				this.list.select(currentId);
+			}
+		});
 	}
 	saveNewContact() {
 		webix.prompt({
@@ -65,8 +67,11 @@ export default class ContactsView extends JetView {
 			width:350,
 		}).then(result => {
 			const data = {Name: result};
-			contacts.add(data);
-			this.list.select(data.id);
+			contacts.waitSave(() => {
+				contacts.add(data);
+			}).then((res) => {
+				this.list.select(res.id);
+			});
 		});
 	}
 	deleteItem(id) {

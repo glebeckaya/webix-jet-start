@@ -39,7 +39,7 @@ export default class DataTableView extends JetView{
 					},
 					onClick: {
 						"wxi-trash": (e, id) => {
-							showConfirmMessage(id, this.table, _);
+							showConfirmMessage(id, this.data, _);
 						}
 					},
 				}
@@ -47,8 +47,8 @@ export default class DataTableView extends JetView{
 		};
 	}
 	init() {
-		this.$$("dataTable").parse(this.data);
 		this.table = this.$$("dataTable");
+		this.table.parse(this.data);
 		this._ = this.app.getService("locale")._;
 	}
 	addItem() {
@@ -62,7 +62,7 @@ export default class DataTableView extends JetView{
 			}
 		}).then(
 			(result) => {
-				this.table.add({"Name": result});
+				this.data.add({"Name": result});
 			}
 		);
 	}
