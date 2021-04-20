@@ -69,8 +69,8 @@ export default class ContactsView extends JetView {
 			const data = {Name: result};
 			contacts.waitSave(() => {
 				contacts.add(data);
-			}).then(() => {
-				this.list.select(data.id);
+			}).then((res) => {
+				this.list.select(res.id);
 			});
 		});
 	}
