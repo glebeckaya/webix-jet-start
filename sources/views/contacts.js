@@ -41,9 +41,7 @@ export default class ContactsView extends JetView {
 	}
 	init() {
 		this.list = this.$$("list");
-		contacts.waitData.then(() => {
-			this.list.parse(contacts);
-		});
+		this.list.sync(contacts);
 		this.on(this.list, "onAfterSelect", id => {
 			this.setParam("id", id, true);
 		});
